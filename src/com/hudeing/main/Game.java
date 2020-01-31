@@ -32,6 +32,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	private BufferedImage image;
 	public List<Entity> entities;
 	public Spritesheet spritesheet;
+	private Player player;
 		
 	public Game() {
 		addKeyListener(this);
@@ -41,7 +42,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
-		entities.add(new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16)));
+		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+		entities.add(player);
 	}
 	
 	public void initFrame() {
@@ -149,21 +151,38 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
-			System.out.println("Direita");
+			// System.out.println("Direita");
+			player.right = true;
 		} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
-			System.out.println("Esquerda");
+			//System.out.println("Esquerda");
+			player.left = true;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			System.out.println("Cima");
+			//System.out.println("Cima");
+			player.up = true;
 		} else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			System.out.println("Baixo");
+			//System.out.println("Baixo");
+			player.down = true;
 		}
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			// System.out.println("Direita");
+			player.right = false;
+		} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			//System.out.println("Esquerda");
+			player.left = false;
+		}
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			System.out.println("Cima");
+			player.up = false;
+		} else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			System.out.println("Baixo");
+			player.down = false;
+		}
 		
 	}
 

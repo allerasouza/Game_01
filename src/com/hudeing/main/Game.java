@@ -6,7 +6,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JFrame;
+
+import com.hudeing.entities.Entity;
+import com.hudeing.entities.Player;
+import com.hudeing.graficos.Spritesheet;
 
 public class Game extends Canvas implements Runnable{
 
@@ -20,13 +27,18 @@ public class Game extends Canvas implements Runnable{
 	private final int WIDTH = 240;
 	private final int HEIGHT = 160;
 	private final int SCALE = 3;
-	
-	private BufferedImage image;	
+	private BufferedImage image;
+	public List<Entity> entities;
+	public Spritesheet spritesheet;
 		
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
+		//Inicializando objetos.
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		entities = new ArrayList<Entity>();
+		spritesheet = new Spritesheet("/spritesheet.png");
+		entities.add(new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16)));
 	}
 	
 	public void initFrame() {
@@ -64,7 +76,11 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void tick() {
-				
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			//if(e instanceof Player) { System.out.println("Estou dando tick no player!");}
+			e.tick();
+		}
 	}
 	
 	public void render() {
@@ -79,7 +95,10 @@ public class Game extends Canvas implements Runnable{
 		
 		/*Renderização do jogo*/
 		//Graphics2D g2 = (Graphics2D) g;
-		
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			e.render(g);
+		}
 		/***/
 		g.dispose();
 		g = bs.getDrawGraphics();

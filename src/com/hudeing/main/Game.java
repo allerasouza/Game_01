@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,7 +17,7 @@ import com.hudeing.entities.Entity;
 import com.hudeing.entities.Player;
 import com.hudeing.graficos.Spritesheet;
 
-public class Game extends Canvas implements Runnable{
+public class Game extends Canvas implements Runnable, KeyListener{
 
 	/**
 	 * 
@@ -32,6 +34,7 @@ public class Game extends Canvas implements Runnable{
 	public Spritesheet spritesheet;
 		
 	public Game() {
+		addKeyListener(this);
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos.
@@ -122,7 +125,7 @@ public class Game extends Canvas implements Runnable{
 			if(delta >= 1) {
 				tick();
 				render();
-				frames++;				
+				frames++;
 				//delta = 0;
 				delta--;
 			}
@@ -134,6 +137,33 @@ public class Game extends Canvas implements Runnable{
 			//System.out.println("Meu jogo está rodando!");
 		}
 		stop();
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+				
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
+			System.out.println("Direita");
+		} else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+			System.out.println("Esquerda");
+		}
+		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+			System.out.println("Cima");
+		} else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+			System.out.println("Baixo");
+		}
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

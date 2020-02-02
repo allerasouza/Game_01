@@ -36,11 +36,11 @@ public class Player extends Entity{
 		moved = false;
 		if(right) {
 			moved = true;
-			x+=speed; //this.setX(getX() + speed);
+			x += speed; //this.setX(getX() + speed);
 			dir = right_dir;
 		} else if(left) {
 			moved = true;
-			x-=speed; //this.setX(getX() - speed);
+			x -= speed; //this.setX(getX() - speed);
 			dir = left_dir;
 		}
 		

@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import com.hudeing.entities.*;
+import com.hudeing.main.Game;
+
 public class World {
 	
 	private Tile[] tiles;
@@ -22,18 +25,29 @@ public class World {
 			for(int xx = 0; xx < map.getWidth(); xx++) {
 				for(int yy = 0; yy < map.getHeight(); yy++) {
 					int pixelAtual = pixels[xx + (yy*map.getWidth())];
+					tiles[xx + (yy*WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
 					if(pixelAtual == 0xFF000000) {
-						//Chão
+						// Floor
 						tiles[xx + (yy*WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
 					} else if(pixelAtual == 0xFFFFFFFF) {
-						//Parede
+						// Parede
 						tiles[xx + (yy*WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_WALL);
 					} else if(pixelAtual == 0xFF0026FF) {
-						//Player
-						tiles[xx + (yy*WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
-					} else {
-						//Chão
-						tiles[xx + (yy*WIDTH)] = new FloorTile(xx * 16, yy * 16, Tile.TILE_FLOOR);
+						// Player
+						Game.player.setX(xx*16);
+						Game.player.setY(yy*16);
+					} else if(pixelAtual == 0xFFFF0000) {
+						// Enemy
+						Game.entities.add(new Enemy(xx*16, yy*16, 16, 16, Enemy.ENEMY_EN));
+					} else if(pixelAtual == 0xFFFF6A00) {
+						// WEAPON
+						Game.entities.add(new Weapon(xx*16, yy*16, 16, 16, Weapon.WEAPON_EN));
+					} else if(pixelAtual == 0xFFFF7F7F) {
+						// LIFEPACK
+						Game.entities.add(new Lifepack(xx*16, yy*16, 16, 16, Lifepack.LIFEPACK_EN));
+					} else if(pixelAtual == 0xFFFFD800) {
+						// BULLET
+						Game.entities.add(new Bullet(xx*16, yy*16, 16, 16, Bullet.BULLET_EN));
 					}
 				}
 			}

@@ -3,6 +3,7 @@ package com.hudeing.entities;
 import java.awt.image.BufferedImage;
 
 import com.hudeing.main.Game;
+import com.hudeing.world.World;
 
 public class Enemy extends Entity{
 	
@@ -13,15 +14,15 @@ public class Enemy extends Entity{
 	}
 	
 	public void tick() {
-		if((int)x < Game.player.getX()) {
+		if((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY())) {
 			x += speed;
-		} else if((int)x > Game.player.getX()) {
+		} else if((int)x > Game.player.getX() && World.isFree((int)(x - speed), this.getY())) {
 			x -= speed;
 		}
 		
-		if((int)y < Game.player.getY()) {
+		if((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y + speed))) {
 			y += speed;
-		} else if((int)y > Game.player.getY()) {
+		} else if((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed))) {
 			y -= speed;
 		}
 	}

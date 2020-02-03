@@ -34,6 +34,7 @@ public class Enemy extends Entity{
 		maskH = 10;
 		*/
 		//if(Game.rand.nextInt(100) < 80) {
+		if(isCollidingWithPlayer() == false) {
 		if((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY()) && !isColliding((int)(x + speed), this.getY())) {
 			x += speed;
 		} else if((int)x > Game.player.getX() && World.isFree((int)(x - speed), this.getY()) && !isColliding((int)(x - speed), this.getY())) {
@@ -46,6 +47,18 @@ public class Enemy extends Entity{
 			y -= speed;
 		}
 		//}
+		} else {
+			// Estamos colidindo
+			if(Game.rand.nextInt(100) < 10) {
+				Game.player.life -= Game.rand.nextInt(3);
+				if(Game.player.life <= 0) {
+					// Game Over
+					//	System.exit(1);
+				}
+				System.out.println("Vida: " + Game.player.life);
+			
+			}
+		}
 		
 		frames++;
 		if(frames == maxFrames) {
@@ -54,6 +67,13 @@ public class Enemy extends Entity{
 			if(index > maxIndex)
 				index = 0;
 		}
+	}
+	
+	public boolean isCollidingWithPlayer() {
+		Rectangle currentEnemy = new Rectangle(this.getX() + maskX, this.getY() + maskY, 16, 16);
+		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
+		
+		return currentEnemy.intersects(player);
 	}
 	
 	public boolean isColliding(int xNext, int yNext) {

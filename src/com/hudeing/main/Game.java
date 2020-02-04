@@ -18,6 +18,7 @@ import com.hudeing.entities.Enemy;
 import com.hudeing.entities.Entity;
 import com.hudeing.entities.Player;
 import com.hudeing.graficos.Spritesheet;
+import com.hudeing.graficos.UI;
 import com.hudeing.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener{
@@ -39,6 +40,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static World world;
 	public static Player player;
 	public static Random rand;
+	public UI ui;
 		
 	public Game() {
 		rand = new Random();
@@ -46,6 +48,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos.
+		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
@@ -114,6 +117,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			Entity e = entities.get(i);
 			e.render(g);
 		}
+		ui.render(g);
 		/***/
 		g.dispose();
 		g = bs.getDrawGraphics();

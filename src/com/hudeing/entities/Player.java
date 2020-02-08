@@ -2,7 +2,9 @@ package com.hudeing.entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import com.hudeing.graficos.Spritesheet;
 import com.hudeing.main.Game;
 import com.hudeing.world.Camera;
 import com.hudeing.world.World;
@@ -22,7 +24,7 @@ public class Player extends Entity{
 	public int ammo = 0;
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
-	public static double life = 100, maxLife = 100;
+	public double life = 100, maxLife = 100;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -79,6 +81,24 @@ public class Player extends Entity{
 				this.damageFrames = 0;
 				isDamaged = false;
 			}
+		}
+		
+		if(life <= 0) {
+			/*if(Game.player.life <= 0) {
+				// Game Over
+				System.exit(1);
+			}*/
+			Game.entities.clear();
+			Game.enemies.clear();
+			Game.entities = new ArrayList<Entity>();
+			Game.enemies = new ArrayList<Enemy>();
+			Game.spritesheet = new Spritesheet("/spritesheet.png");
+			Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+			Game.entities.add(Game.player);
+			Game.world = new World("/map.png");
+			Camera.x = 0;
+			Camera.y = 0;
+			return;
 		}
 		
 		Camera.x = Camera.clamp(this.getX() - (Game.WIDTH/2), 0, World.WIDTH*16 - Game.WIDTH);

@@ -25,6 +25,7 @@ public class Player extends Entity{
 	public int ammo = 0;
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
+	public boolean shoot = false;
 	public double life = 100, maxLife = 100;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
@@ -82,6 +83,27 @@ public class Player extends Entity{
 			if(this.damageFrames == 8) {
 				this.damageFrames = 0;
 				isDamaged = false;
+			}
+		}
+		
+		if(shoot) {
+			shoot = false;
+			if(hasGun & ammo > 0) {
+				ammo--;
+				//System.out.println("Atirando!");
+				int dX = 0;
+				int pX = 0;
+				int pY = this.getHeight()/2;
+				if(dir == right_dir) {
+					pX = 19;
+					dX = 1;				
+				} else if(dir == left_dir) {
+					pX = -7;
+					dX = -1;
+				}
+				
+				BulletShoot bullet = new BulletShoot(this.getX() + pX, this.getY() + pY, 3, 3, null, dX, 0);
+				Game.bullets.add(bullet);
 			}
 		}
 		

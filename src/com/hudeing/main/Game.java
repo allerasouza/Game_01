@@ -15,6 +15,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.hudeing.entities.BulletShoot;
 import com.hudeing.entities.Enemy;
 import com.hudeing.entities.Entity;
 import com.hudeing.entities.Player;
@@ -37,6 +38,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	private BufferedImage image;
 	public static List<Entity> entities;
 	public static List<Enemy> enemies;
+	public static List<BulletShoot> bullets;
 	public static Spritesheet spritesheet;
 	public static World world;
 	public static Player player;
@@ -53,6 +55,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
+		bullets = new ArrayList<BulletShoot>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -99,6 +102,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			//if(e instanceof Player) { System.out.println("Estou dando tick no player!");}
 			e.tick();
 		}
+		
+		for(int i = 0; i < bullets.size(); i++) {
+			bullets.get(i).tick();
+		}
 	}
 	
 	public void render() {
@@ -118,6 +125,9 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			Entity e = entities.get(i);
 			e.render(g);
 		}
+		for(int i = 0; i < bullets.size(); i++) {
+			bullets.get(i).render(g);
+		}
 		ui.render(g);
 		/***/
 		g.dispose();
@@ -125,7 +135,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
 		g.setFont(new Font("arial", Font.BOLD, 15));
 		g.setColor(Color.WHITE);
-		g.drawString("Munição: " + this.player.ammo, 600, 30);
+		g.drawString("Munição: " + player.ammo, 600, 30);
 		bs.show();
 	}
 
@@ -182,6 +192,10 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			//System.out.println("Baixo");
 			player.down = true;
 		}
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			//System.out.println("Espaço");
+			player.shoot = true;
+		}
 		
 	}
 
@@ -195,13 +209,11 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			player.left = false;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-			System.out.println("Cima");
+			//System.out.println("Cima");
 			player.up = false;
 		} else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-			System.out.println("Baixo");
+			//System.out.println("Baixo");
 			player.down = false;
 		}
-		
 	}
-
 }

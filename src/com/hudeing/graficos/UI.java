@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import com.hudeing.entities.Player;
 import com.hudeing.main.Game;
 //import com.hudeing.main.Game;
 //import com.hudeing.world.Camera;

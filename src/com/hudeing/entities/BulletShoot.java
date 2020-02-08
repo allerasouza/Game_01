@@ -9,12 +9,12 @@ import com.hudeing.world.Camera;
 
 public class BulletShoot extends Entity{
 	
-	private int dX;
-	private int dY;
+	private double dX;
+	private double dY;
 	private double spd = 4;
 	private int life = 30, curLife = 0;
 
-	public BulletShoot(int x, int y, int width, int height, BufferedImage sprite, int dX, int dY) {
+	public BulletShoot(int x, int y, int width, int height, BufferedImage sprite, double dX, double dY) {
 		super(x, y, width, height, sprite);
 		this.dX = dX;
 		this.dY = dY;

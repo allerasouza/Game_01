@@ -26,7 +26,9 @@ public class Player extends Entity{
 	public boolean isDamaged = false;
 	private int damageFrames = 0;
 	public boolean shoot = false;
+	public boolean mouseShoot = false;
 	public double life = 100, maxLife = 100;
+	public int mX, mY;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -107,6 +109,33 @@ public class Player extends Entity{
 			}
 		}
 		
+		if(mouseShoot) {
+			mouseShoot = false;
+			
+			
+			if(hasGun & ammo > 0) {
+				ammo--;
+				//System.out.println("Atirando!");				
+				
+				int pX = 0;
+				int pY = this.getWidth()/2;
+				double angle = 0; // System.out.println("Angulo: " + Math.toDegrees(angle));
+				if(dir == right_dir) {
+					pX = 19;
+									
+				} else if(dir == left_dir) {
+					pX = -7;
+				}
+				angle = Math.atan2(mY - (this.getY() + pY - Camera.y), mX - (this.getX() + pX - Camera.x));
+				
+				double dX = Math.cos(angle);
+				double dY = Math.sin(angle);
+				
+				BulletShoot bullet = new BulletShoot(this.getX() + pX, this.getY() + pY, 3, 3, null, dX, dY);
+				Game.bullets.add(bullet);
+			}
+		}
+				
 		if(life <= 0) {
 			/*if(Game.player.life <= 0) {
 				// Game Over

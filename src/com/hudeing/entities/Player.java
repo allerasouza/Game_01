@@ -137,10 +137,9 @@ public class Player extends Entity{
 		}
 				
 		if(life <= 0) {
-			/*if(Game.player.life <= 0) {
-				// Game Over
-				System.exit(1);
-			}*/
+			// Game Over
+			life = 0;
+			Game.gameState = "GAME_OVER";
 			
 		}
 		

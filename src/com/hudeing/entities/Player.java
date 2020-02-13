@@ -206,19 +206,14 @@ public class Player extends Entity{
 				}
 			}
 		} else {
-			//g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
-			if(dir == right_dir) {
-				g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
-				if(hasGun) {
-					// Desenhar arma para direita
-					g.drawImage(Entity.GUN_RIGHT, this.getX() - Camera.x + (this.width/2), this.getY() - Camera.y, null);
+			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			if(hasGun) {
+				if(dir == left_dir) {
+					g.drawImage(Entity.GUN_DAMAGE_LEFT, this.getX() - Camera.x - (this.width/2), this.getY() - Camera.y, null);
+				} else {
+					g.drawImage(Entity.GUN_DAMAGE_RIGHT, this.getX() - Camera.x + (this.width/2), this.getY() - Camera.y, null);
 				}
-			} else if(dir == left_dir) {
-				g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
-				if(hasGun) {
-					// Desenhar arma para esquerda
-					g.drawImage(Entity.GUN_LEFT, this.getX() - Camera.x - (this.width/2), this.getY() - Camera.y, null);
-				}
+					
 			}
 		}
 	}

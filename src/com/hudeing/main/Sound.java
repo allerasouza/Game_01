@@ -21,7 +21,6 @@ public class Sound {
 		try {
 			new Thread() {
 				public void run() {
-					System.out.println("AAS1");
 					clip.play();
 				}
 			}.start();
@@ -34,7 +33,6 @@ public class Sound {
 		try {
 			new Thread() {
 				public void run() {
-					System.out.println("AAS2");
 					clip.loop();
 				}
 			}.start();

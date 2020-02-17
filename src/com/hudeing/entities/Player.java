@@ -1,5 +1,6 @@
 package com.hudeing.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -29,6 +30,12 @@ public class Player extends Entity{
 	public boolean mouseShoot = false;
 	public double life = 100, maxLife = 100;
 	public int mX, mY;
+	public boolean jump = false;
+	public boolean isJumping = false;
+	public int z = 0;
+	public int jumpFrames = 12, jumpCur = 0;
+	public boolean jumpUp = false, jumpDown = false;
+	public int jumpSpeed = 1;
 
 	public Player(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, sprite);
@@ -46,6 +53,32 @@ public class Player extends Entity{
 	}
 	
 	public void tick() {
+		if(jump) {
+			if(!isJumping) {
+				jump = false;
+				isJumping = true;
+				jumpUp = true;
+			}
+		}
+		
+		if(isJumping) {
+			if(jumpUp) {
+				jumpCur+=jumpSpeed;
+			} else if(jumpDown) {
+				jumpCur-=jumpSpeed;
+				if(jumpCur <= 0 ) {
+					isJumping = false;
+					jumpDown = false;
+					jumpUp = false;
+				}
+			}
+			z = jumpCur;
+			if(jumpCur >= jumpFrames) {
+				jumpUp = false;
+				jumpDown = true;
+			}
+		}
+		
 		moved = false;
 		if(right && World.isFree((int)(x+speed), this.getY())) {
 			moved = true;
@@ -196,28 +229,33 @@ public class Player extends Entity{
 	public void render(Graphics g) {
 		if(!isDamaged) {
 			if(dir == right_dir) {
-				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(rightPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				if(hasGun) {
 					// Desenhar arma para direita
-					g.drawImage(Entity.GUN_RIGHT, this.getX() - Camera.x + (this.width/2), this.getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_RIGHT, this.getX() - Camera.x + (this.width/2), this.getY() - Camera.y - z, null);
 				}
 			} else if(dir == left_dir) {
-				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y, null);
+				g.drawImage(leftPlayer[index], this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 				if(hasGun) {
 					// Desenhar arma para esquerda
-					g.drawImage(Entity.GUN_LEFT, this.getX() - Camera.x - (this.width/2), this.getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_LEFT, this.getX() - Camera.x - (this.width/2), this.getY() - Camera.y - z, null);
 				}
 			}
 		} else {
-			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y, null);
+			g.drawImage(playerDamage, this.getX() - Camera.x, this.getY() - Camera.y - z, null);
 			if(hasGun) {
 				if(dir == left_dir) {
-					g.drawImage(Entity.GUN_DAMAGE_LEFT, this.getX() - Camera.x - (this.width/2), this.getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_DAMAGE_LEFT, this.getX() - Camera.x - (this.width/2), this.getY() - Camera.y - z, null);
 				} else {
-					g.drawImage(Entity.GUN_DAMAGE_RIGHT, this.getX() - Camera.x + (this.width/2), this.getY() - Camera.y, null);
+					g.drawImage(Entity.GUN_DAMAGE_RIGHT, this.getX() - Camera.x + (this.width/2), this.getY() - Camera.y - z, null);
 				}
 					
 			}
+		}
+		
+		if(isJumping) {
+			g.setColor(Color.BLACK);
+			g.fillOval(this.getX() - Camera.x + 2 , this.getY() - Camera.y + this.height - 5, 10, 5);
 		}
 	}
 }

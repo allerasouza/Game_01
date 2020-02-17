@@ -109,7 +109,11 @@ public class Enemy extends Entity{
 		Rectangle currentEnemy = new Rectangle(this.getX() + maskX, this.getY() + maskY, 16, 16);
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 		
-		return currentEnemy.intersects(player);
+		//return currentEnemy.intersects(player);
+		if(currentEnemy.intersects(player) && this.z == Game.player.z) {
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean isColliding(int xNext, int yNext) {

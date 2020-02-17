@@ -23,6 +23,7 @@ public class Enemy extends Entity{
 	
 	private boolean isDamaged = false;
 	private int damageFrames = 10, damageCurrent = 0;
+	private boolean hasAgroo = false;
 
 	public Enemy(int x, int y, int width, int height, BufferedImage sprite) {
 		super(x, y, width, height, null);
@@ -39,27 +40,30 @@ public class Enemy extends Entity{
 		maskH = 10;
 		*/
 		//if(Game.rand.nextInt(100) < 80) {
-		if(isCollidingWithPlayer() == false) {
-		if((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY(), this) && !isColliding((int)(x + speed), this.getY())) {
-			x += speed;
-		} else if((int)x > Game.player.getX() && World.isFree((int)(x - speed), this.getY(), this) && !isColliding((int)(x - speed), this.getY())) {
-			x -= speed;
-		}
-		
-		if((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y + speed), this) && !isColliding(this.getX(), (int)(y + speed))) {
-			y += speed;
-		} else if((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed), this) && !isColliding(this.getX(), (int)(y - speed))) {
-			y -= speed;
-		}
-		//}
-		} else {
-			// Estamos colidindo
-			if(Game.rand.nextInt(100) < 10) {
-				Sound.hurtEffect.play();
-				Game.player.life -= Game.rand.nextInt(3);
-				Game.player.isDamaged = true;
-				//System.out.println("Vida: " + Game.player.life);
+		if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 50 || hasAgroo) {
+			hasAgroo = true;
+			if(isCollidingWithPlayer() == false) {
+			if((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY(), this) && !isColliding((int)(x + speed), this.getY())) {
+				x += speed;
+			} else if((int)x > Game.player.getX() && World.isFree((int)(x - speed), this.getY(), this) && !isColliding((int)(x - speed), this.getY())) {
+				x -= speed;
+			}
 			
+			if((int)y < Game.player.getY() && World.isFree(this.getX(), (int)(y + speed), this) && !isColliding(this.getX(), (int)(y + speed))) {
+				y += speed;
+			} else if((int)y > Game.player.getY() && World.isFree(this.getX(), (int)(y - speed), this) && !isColliding(this.getX(), (int)(y - speed))) {
+				y -= speed;
+			}
+			//}
+			} else {
+				// Estamos colidindo
+				if(Game.rand.nextInt(100) < 10) {
+					Sound.hurtEffect.play();
+					Game.player.life -= Game.rand.nextInt(3);
+					Game.player.isDamaged = true;
+					//System.out.println("Vida: " + Game.player.life);
+				
+				}
 			}
 		}
 		

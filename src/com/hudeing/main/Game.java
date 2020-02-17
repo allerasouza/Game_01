@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -29,7 +30,7 @@ import com.hudeing.graficos.Spritesheet;
 import com.hudeing.graficos.UI;
 import com.hudeing.world.World;
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener{
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener{
 
 	/**
 	 * 
@@ -59,12 +60,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private boolean restartGame = false;
 	public Menu menu;
 	public boolean saveGame = false;
+	public int mX, mY;
 		
 	public Game() {
 		Sound.musicBackground.loop();
 		rand = new Random();
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos.
@@ -213,9 +216,20 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		} else if(gameState == "MENU") {
 			menu.render(g);
 		}
+		
+		// Rotacionando objetos
+		/*Graphics2D g2 = (Graphics2D) g;
+		double angleMouse = Math.atan2(200 + 25 - mY, 200 + 25 - mX);
+		g2.rotate(angleMouse, 200 + 25, 200 + 25);
+		System.out.println(Math.toDegrees(angleMouse));
+		g.setColor(Color.RED);
+		g.fillRect(200, 200, 50, 50);*/
+		
+		// Setando fonte customizada
 		/*g.setFont(newFont);
 		g.setColor(Color.RED);
 		g.drawString("Teste com a nova fonte", 90, 90);*/
+		
 		bs.show();
 	}
 
@@ -354,6 +368,19 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		this.mX = e.getX();
+		this.mY = e.getY();
 		
 	}
 }

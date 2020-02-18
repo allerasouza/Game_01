@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import com.hudeing.entities.BulletShoot;
@@ -61,7 +62,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
 	public Menu menu;
-	//public int[] pixels;
+	public int[] pixels;
+	public BufferedImage lightMap;
+	public int[] lightMapPixels;
 	public boolean saveGame = false;
 	public int mX, mY;
 		
@@ -76,7 +79,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		//Inicializando objetos.
 		ui = new UI();
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		//pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+		pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+		try {
+			lightMap = ImageIO.read(getClass().getResource("/lightmap.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		lightMapPixels = new int[lightMap.getWidth() * lightMap.getHeight()];
+		lightMap.getRGB(0, 0, lightMap.getWidth(), lightMap.getHeight(), lightMapPixels, 0, lightMap.getWidth());
 		entities = new ArrayList<Entity>();
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<BulletShoot>();
@@ -194,6 +204,18 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		}
 	}*/
 	
+	public void applyLight() {
+		for(int xx = 0; xx < Game.WIDTH; xx++) {
+			for(int yy = 0; yy < Game.HEIGHT; yy++) {
+				if(lightMapPixels[xx + (yy * Game.WIDTH)] == 0xffffffff) {
+					pixels[xx + (yy * Game.WIDTH)] = 0;
+				} else {
+					continue;
+				}
+			}
+		}
+	}
+	
 	public void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if(bs == null) {
@@ -214,6 +236,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		for(int i = 0; i < bullets.size(); i++) {
 			bullets.get(i).render(g);
 		}
+		applyLight();
 		ui.render(g);
 		/***/
 		g.dispose();

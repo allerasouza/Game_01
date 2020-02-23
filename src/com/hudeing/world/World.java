@@ -64,15 +64,19 @@ public class World {
 	}
 	
 	public static boolean isFree(int xNext, int yNext, Entity e) {
-		int x1 = xNext / TILE_SIZE;
-		int y1 = yNext / TILE_SIZE;
-		
+		// Ponto superior esquerdo
+		int x1 = (xNext + 1) / TILE_SIZE;
+		int y1 = (yNext + 1) / TILE_SIZE;
+
+		// Ponto superior direito
 		int x2 = (xNext + TILE_SIZE -1) / TILE_SIZE;
-		int y2 = yNext / TILE_SIZE;
+		int y2 = (yNext + 1) / TILE_SIZE;
 		
-		int x3 = xNext / TILE_SIZE;
+		// Ponto inferior esquerdo
+		int x3 = (xNext + 1) / TILE_SIZE;
 		int y3 = (yNext + TILE_SIZE -1) / TILE_SIZE;
 		
+		// Ponto inferior direito
 		int x4 = (xNext + TILE_SIZE -1) / TILE_SIZE;
 		int y4 = (yNext + TILE_SIZE -1) / TILE_SIZE;
 		
@@ -93,6 +97,7 @@ public class World {
 	public static void restartGame(String level) {
 		Game.entities.clear();
 		Game.enemies.clear();
+		Game.bullets.clear();
 		Game.entities = new ArrayList<Entity>();
 		Game.enemies = new ArrayList<Enemy>();
 		Game.spritesheet = new Spritesheet("/spritesheet.png");

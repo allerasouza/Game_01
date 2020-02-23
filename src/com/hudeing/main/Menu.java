@@ -154,9 +154,12 @@ public class Menu {
 	public void render(Graphics g) {
 		/*Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(new Color(0, 0, 0, 100));
-		g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);*/ 
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
+		g2.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);*/
+		
+		// Change background to black
+		//g.setColor(Color.BLACK);
+		//g.fillRect(0, 0, Game.WIDTH * Game.SCALE, Game.HEIGHT * Game.SCALE);
+		
 		g.setColor(new Color(100, 0, 100));
 		g.setFont(new Font("arial", Font.BOLD, 36));
 		g.drawString("   AAS shooter 0", (Game.WIDTH * Game.SCALE)/2 - 200, (Game.HEIGHT * Game.SCALE)/2 - 160);

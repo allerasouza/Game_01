@@ -55,6 +55,11 @@ public class World {
 					} else if(pixelAtual == 0xFFFFD800) {
 						// BULLET
 						Game.entities.add(new Bullet(xx*16, yy*16, 16, 16, Bullet.BULLET_EN));
+					} else if(pixelAtual == 0xFF4CFF00) {
+						// Flower
+						/*Flower flower = new Flower(xx*16, yy*16, 16, 16, Entity.FLOWER_EN);
+						Game.entities.add(flower);*/
+						tiles[xx + (yy*WIDTH)] = new FloorTile(xx*16, yy*16, Entity.FLOWER_EN);
 					}
 				}
 			}

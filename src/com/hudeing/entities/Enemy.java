@@ -1,26 +1,23 @@
 package com.hudeing.entities;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import com.hudeing.main.Game;
 import com.hudeing.main.Sound;
+import com.hudeing.world.AStar;
 import com.hudeing.world.Camera;
+import com.hudeing.world.Vector2i;
 import com.hudeing.world.World;
 
 public class Enemy extends Entity{
 	
 	private double speed = 0.4;
-	
-	private int maskX = 8, maskY = 8, maskW = 10, maskH = 10;
-	
 	private int frames = 0, maxFrames = 20, index = 0, maxIndex = 1;
-	
 	private BufferedImage[] sprites;
-	
 	private int life = 10;
-	
 	private boolean isDamaged = false;
 	private int damageFrames = 10, damageCurrent = 0;
 	private boolean hasAgroo = false;
@@ -40,7 +37,9 @@ public class Enemy extends Entity{
 		maskH = 10;
 		*/
 		//if(Game.rand.nextInt(100) < 80) {
-		if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 50 || hasAgroo) {
+		
+		// Normal enemy intelligence
+		/*if(this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 50 || hasAgroo) {
 			hasAgroo = true;
 			if(isCollidingWithPlayer() == false) {
 			if((int)x < Game.player.getX() && World.isFree((int)(x + speed), this.getY(), this) && !isColliding((int)(x + speed), this.getY())) {
@@ -65,6 +64,38 @@ public class Enemy extends Entity{
 				
 				}
 			}
+		}*/
+		
+		//AStar intelligence
+		maskX = 5;
+		maskY = 8;
+		mWidth = 8;
+		mHeight = 8;
+		if(!isCollidingWithPlayer()) {
+			if(path == null  || path.size() == 0) {
+				Vector2i start = new Vector2i((int)(x / 16), (int)(y / 16));
+				Vector2i end = new Vector2i((int)((double)Game.player.getX() / 16), (int)((double)Game.player.getY() / 16));
+				path = AStar.findPath(Game.world, start, end);
+			}
+		} else {
+			// Estamos colidindo
+			if(Game.rand.nextInt(100) < 5) {
+				Sound.hurtEffect.play();
+				Game.player.life -= Game.rand.nextInt(3);
+				Game.player.isDamaged = true;
+				//System.out.println("Vida: " + Game.player.life);
+			
+			}
+		}
+		
+		if(Game.rand.nextInt(100) < 90) {
+			followPath(path);
+		}
+			
+		if(Game.rand.nextInt(100) < 5) {
+			Vector2i start = new Vector2i((int)(x / 16), (int)(y / 16));
+			Vector2i end = new Vector2i((int)((double)Game.player.getX() / 16), (int)((double)Game.player.getY() / 16));
+			path = AStar.findPath(Game.world, start, end);
 		}
 		
 		frames++;
@@ -110,28 +141,12 @@ public class Enemy extends Entity{
 	}
 	
 	public boolean isCollidingWithPlayer() {
-		Rectangle currentEnemy = new Rectangle(this.getX() + maskX, this.getY() + maskY, 16, 16);
+		Rectangle currentEnemy = new Rectangle(this.getX() + maskX, this.getY() + maskY, mWidth, mHeight);
 		Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), 16, 16);
 		
 		//return currentEnemy.intersects(player);
 		if(currentEnemy.intersects(player) && this.z == Game.player.z) {
 			return true;
-		}
-		return false;
-	}
-	
-	public boolean isColliding(int xNext, int yNext) {
-		//Rectangle currentEnemy = new Rectangle(xNext, yNext, World.TILE_SIZE, World.TILE_SIZE);
-		Rectangle currentEnemy = new Rectangle(xNext + maskX, yNext + maskY, maskW, maskH);
-		for(int i = 0; i < Game.enemies.size(); i++) {
-			Enemy en = Game.enemies.get(i);
-			if(en == this)
-				continue;
-			
-			//Rectangle targetEnemy = new Rectangle(en.getX(), en.getY(), World.TILE_SIZE, World.TILE_SIZE);
-			Rectangle targetEnemy = new Rectangle(en.getX() + maskX, en.getY() + maskY, maskW, maskH);
-			if(currentEnemy.intersects(targetEnemy))
-				return true;
 		}
 		return false;
 	}
@@ -142,8 +157,8 @@ public class Enemy extends Entity{
 		else
 			g.drawImage(Entity.ENEMY_FEEDBACK, this.getX() - Camera.x, this.getY() - Camera.y, null);
 		//g.setColor(Color.BLUE);
-		//g.fillRect(this.getX() - Camera.x, this.getY() - Camera.y, 16, 16);
-		//g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y, maskW, maskH);
+		////g.fillRect(this.getX() - Camera.x, this.getY() - Camera.y, 16, 16);
+		//g.fillRect(this.getX() + maskX - Camera.x, this.getY() + maskY - Camera.y, mWidth, mHeight);
 	}
 
 }

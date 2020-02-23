@@ -30,6 +30,10 @@ public class Enemy extends Entity{
 	}
 	
 	public void tick() {
+		if(this.getY() > Game.player.getY())
+			depth = Game.player.depth + 1;
+		else
+			depth = Game.player.depth - 1;
 		/*
 		maskX = 8;
 		maskY = 8;

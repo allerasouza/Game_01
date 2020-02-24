@@ -2,11 +2,15 @@ package com.hudeing.main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -114,6 +118,21 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		frame.add(this);
 		frame.setResizable(false);
 		frame.pack();
+		
+		// Icone da janela e do cursor
+		Image imagem = null;
+		try {
+			imagem = ImageIO.read(getClass().getResource("/icon.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = toolkit.getImage(getClass().getResource("/icon_32.png"));
+		Cursor c = toolkit.createCustomCursor(image, new Point(0, 0), "img");
+		frame.setCursor(c);
+		frame.setIconImage(image);
+		frame.setAlwaysOnTop(true);
+		
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);

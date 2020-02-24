@@ -81,7 +81,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
+		this.setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE)); // Fixed window size
+		//this.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize())); // Fullscreen
 		initFrame();
 		//Inicializando objetos.
 		ui = new UI();
@@ -116,6 +117,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public void initFrame() {
 		frame = new JFrame("Game #1");
 		frame.add(this);
+		//frame.setUndecorated(false); //Remove barra de cima, com icone de minimizar, maximizar e fechar
 		frame.setResizable(false);
 		frame.pack();
 		
@@ -268,7 +270,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		g.dispose();
 		g = bs.getDrawGraphics();
 		//drawRectangleExample(xx, yy);
-		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
+		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null); // Fixed window size
+		//g.drawImage(image, 0, 0, Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height, null); // Fullscreen
 		g.setFont(new Font("arial", Font.BOLD, 15));
 		g.setColor(Color.WHITE);
 		g.drawString("Munição: " + player.ammo, 600, 30);

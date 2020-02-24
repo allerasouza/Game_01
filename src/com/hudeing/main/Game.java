@@ -63,11 +63,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	private int framesGameOver = 0;
 	private boolean restartGame = false;
 	public Menu menu;
-	public int[] pixels;
-	public BufferedImage lightMap;
-	public int[] lightMapPixels;
+	public static BufferedImage lightMap;
+	public static BufferedImage miniMap;
+	public static int[] pixels;	
+	public static int[] lightMapPixels;
+	public static int[] miniMapPixels;
 	public boolean saveGame = false;
-	public int mX, mY;
+	public int mX, mY;	
 		
 	public Game() {
 		Sound.musicBackground.loop();
@@ -95,6 +97,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		miniMap = new BufferedImage(World.WIDTH, World.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		miniMapPixels = ((DataBufferInt)miniMap.getRaster().getDataBuffer()).getData();
 		/*try {
 			newFont = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(70f);
 		} catch (FontFormatException e) {
@@ -275,6 +279,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		/*g.setFont(newFont);
 		g.setColor(Color.RED);
 		g.drawString("Teste com a nova fonte", 90, 90);*/
+		
+		// Minimap
+		World.renderMiniMap();
+		g.drawImage(miniMap, 560, 40, World.WIDTH * 5, World.HEIGHT * 5, null);
 		
 		bs.show();
 	}

@@ -130,4 +130,30 @@ public class World {
 			}
 		}
 	}
+	
+	public static void renderMiniMap() {
+		for(int i =0; i < Game.miniMapPixels.length; i++) {
+			Game.miniMapPixels[i] = 0;
+		}
+		for(int xx = 0; xx < WIDTH; xx++) {
+			for(int yy = 0; yy < HEIGHT; yy++) {
+				/*if(tiles[xx + (yy*WIDTH)] instanceof Player) {
+					Game.miniMapPixels[xx + (yy*WIDTH)] = 0xFF0000FF;
+				}*/
+				if(tiles[xx + (yy*WIDTH)] instanceof WallTile) {
+					Game.miniMapPixels[xx + (yy*WIDTH)] = 0xFFFF0000;//ff7c4927;
+				}
+				/*else {
+					Game.miniMapPixels[xx + (yy*WIDTH)] = 0xff094b16;
+				}
+				if((xx == ((Game.player.getX() + 1) / 16)) && (yy == ((Game.player.getY() + 1) / 16))) {
+					Game.miniMapPixels[xx + (yy*WIDTH)] = 0xFFFFFF00;
+				}*/
+			}
+		}
+		
+		int xPlayer = (Game.player.getX() + 1) / 16;
+		int yPlayer = (Game.player.getY() + 1) / 16;
+		Game.miniMapPixels[xPlayer + (yPlayer*WIDTH)] = 0xFF0000FF;
+	}
 }

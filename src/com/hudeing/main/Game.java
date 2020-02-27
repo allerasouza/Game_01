@@ -73,7 +73,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static int[] lightMapPixels;
 	public static int[] miniMapPixels;
 	public boolean saveGame = false;
-	public int mX, mY;	
+	public int mX, mY;
+	// Cutscene system
+	public static int entrada = 1;
+	public static int comecar = 2;
+	public static int jogando = 3;
+	public static int estadoCena = entrada;
+	public int timeCena = 0, maxTimeCena = 60 * 3;
 		
 	public Game() {
 		Sound.musicBackground.loop();
@@ -176,14 +182,33 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				System.out.println("Jogo salvo");
 			}
 			this.restartGame = false;
-			for(int i = 0; i < entities.size(); i++) {
-				Entity e = entities.get(i);
-				//if(e instanceof Player) { System.out.println("Estou dando tick no player!");}
-				e.tick();
-			}
-			
-			for(int i = 0; i < bullets.size(); i++) {
-				bullets.get(i).tick();
+			if(Game.estadoCena == Game.jogando) {
+				for(int i = 0; i < entities.size(); i++) {
+					Entity e = entities.get(i);
+					//if(e instanceof Player) { System.out.println("Estou dando tick no player!");}
+					e.tick();
+				}
+				
+				for(int i = 0; i < bullets.size(); i++) {
+					bullets.get(i).tick();
+				}
+			} else {
+				if(Game.estadoCena == Game.entrada) {
+					//player.dir = player.right_dir;
+					if(player.getX() < 400) {
+						player.setX(player.getX() + 1);
+						player.updateCamera();
+					} else {
+						//player.dir = player.left_dir;
+						System.out.println("Game entrada concluido!");
+						Game.estadoCena = Game.comecar;
+					}
+				} else if(Game.estadoCena == Game.comecar) {
+					timeCena++;
+					if(timeCena == maxTimeCena) {
+						Game.estadoCena = Game.jogando;
+					}
+				}
 			}
 			
 			if(enemies.size() == 0) {
@@ -286,6 +311,11 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 				g.drawString(">Pressione ENTER para reiniciar<",WIDTH * SCALE / 2 - 250, HEIGHT * SCALE / 2 + 40);
 		} else if(gameState == "MENU") {
 			menu.render(g);
+		}
+		
+		// Cutscene system
+		if(Game.estadoCena == Game.comecar) {
+			g.drawString("Se prepare... O jogo vai começar!",player.getX() - 50 , player.getY());
 		}
 		
 		// Rotacionando objetos

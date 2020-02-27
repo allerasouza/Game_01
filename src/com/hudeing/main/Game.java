@@ -32,6 +32,7 @@ import javax.swing.JFrame;
 import com.hudeing.entities.BulletShoot;
 import com.hudeing.entities.Enemy;
 import com.hudeing.entities.Entity;
+import com.hudeing.entities.NPC;
 import com.hudeing.entities.Player;
 import com.hudeing.graficos.Spritesheet;
 import com.hudeing.graficos.UI;
@@ -56,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 	public static List<BulletShoot> bullets;
 	public static Spritesheet spritesheet;
 	public static World world;
+	public NPC npc;
 	public static Player player;
 	public static Random rand;
 	public UI ui;
@@ -108,6 +110,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 		player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
 		world = new World("/level1.png");
+		//Add npc
+		npc = new NPC(32, 32, 16, 16, spritesheet.getSprite(32, 32, 16, 16));
+		entities.add(npc);
 		miniMap = new BufferedImage(World.WIDTH, World.HEIGHT, BufferedImage.TYPE_INT_RGB);
 		miniMapPixels = ((DataBufferInt)miniMap.getRaster().getDataBuffer()).getData();
 		/*try {
@@ -408,6 +413,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 			}
 			if(gameState == "MENU") {
 				menu.enter = true;
+			}
+			if(gameState == "NORMAL") {
+				npc.showMessage = false;
 			}
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
